@@ -1,0 +1,110 @@
+{% extends 'admin_home.html' %}
+
+{% block body %}
+
+<div class="p-8 max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-4xl font-bold text-gray-900">Food Menu</h1>
+            <p class="text-gray-600 mt-1">Manage all food items in your restaurant</p>
+        </div>
+
+        <a href="/FoodApp/add_food_details/"
+           class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-8 py-4 rounded-3xl font-semibold flex items-center gap-3 transition-all active:scale-95">
+            <i class="fa-solid fa-plus"></i> Add New Food Item
+        </a>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="mb-6">
+        <div class="relative w-full max-w-md">
+            <input type="text" id="searchInput"
+                   placeholder="Search food items..."
+                   class="w-full bg-white border border-gray-300 rounded-3xl py-4 px-6 pl-12 text-sm focus:outline-none focus:border-yellow-500 transition-colors">
+            <i class="fa-solid fa-magnifying-glass absolute left-5 top-4 text-gray-400"></i>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-xl">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-50 border-b border-gray-200">
+                    <th class="py-6 px-6 text-left text-gray-500 font-medium w-12">SI</th>
+                    <th class="py-6 px-6 text-left text-gray-500 font-medium">Food Name</th>
+                    <th class="py-6 px-6 text-left text-gray-500 font-medium">Description</th>
+                    <th class="py-6 px-6 text-left text-gray-500 font-medium">Size</th>
+                    <th class="py-6 px-6 text-center text-gray-500 font-medium">Available</th>
+                    <th class="py-6 px-6 text-center text-gray-500 font-medium">Image</th>
+                    <th class="py-6 px-6 text-right text-gray-500 font-medium">Price</th>
+                    <th class="py-6 px-6 text-center text-gray-500 font-medium w-32">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100" id="foodTable">
+                {% for i in data %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="py-6 px-6 text-gray-500">{{ forloop.counter }}</td>
+                    <td class="py-6 px-6 font-medium text-gray-900">{{ i.name }}</td>
+                    <td class="py-6 px-6 text-gray-600 text-sm max-w-md">{{ i.description|truncatechars:80 }}</td>
+                    <td class="py-6 px-6 text-gray-600">{{ i.size }}</td>
+                    <td class="py-6 px-6 text-center">
+                        {% if i.available %}
+                            <span class="inline-block px-5 py-1.5 bg-emerald-100 text-emerald-700 text-sm font-medium rounded-3xl">Available</span>
+                        {% else %}
+                            <span class="inline-block px-5 py-1.5 bg-red-100 text-red-700 text-sm font-medium rounded-3xl">Not Available</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-6 px-6 text-center">
+                        {% if i.image %}
+                            <img src="{{ i.image.url }}"
+                                 class="w-20 h-20 object-cover rounded-2xl border border-gray-200 shadow-md"
+                                 alt="{{ i.name }}">
+                        {% else %}
+                            <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center text-3xl">🍽️</div>
+                        {% endif %}
+                    </td>
+                    <td class="py-6 px-6 text-right font-semibold text-emerald-600">₹{{ i.price }}</td>
+                    <td class="py-6 px-6">
+                        <div class="flex gap-3 justify-center">
+                            <a href="/FoodApp/edit/{{ i.id }}"
+                               class="text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1.5 text-sm font-medium">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </a>
+                            <a href="/FoodApp/delete_view_food_details/{{ i.id }}"
+                               onclick="return confirm('Are you sure you want to delete this item?')"
+                               class="text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1.5 text-sm font-medium">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="py-20 text-center text-gray-500">
+                        <div class="text-6xl mb-4">📭</div>
+                        No food items found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6 text-center text-gray-500 text-sm">
+        Total Items: <span class="font-medium text-gray-700">{{ data|length }}</span>
+    </div>
+</div>
+
+<script>
+    // Simple search functionality
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#foodTable tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin • FoodoRax</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .sidebar-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-link:hover {
+            transform: translateX(8px);
+            background-color: rgb(243 244 246);
+        }
+
+        .card-hover {
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-active {
+            background-color: rgb(234 179 8);
+            color: black;
+            font-weight: 600;
+        }
+
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="h-full text-gray-800 bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-72 bg-white border-r border-gray-200 flex flex-col shadow-sm">
+            <!-- Logo -->
+            <div class="p-8 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-yellow-500 rounded-2xl flex items-center justify-center text-gray-900 font-bold text-2xl shadow-inner">🍔</div>
+                    <div>
+                        <span class="text-3xl font-bold tracking-tight text-gray-900">Foodo<span class="text-yellow-500">raX</span></span>
+                        <span class="block text-[10px] text-gray-500 -mt-1 tracking-[2px]">ADMIN</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex-1 overflow-y-auto py-8 px-4">
+                <nav class="space-y-2">
+                    <a href="#" onclick="switchTab(0)" class="nav-active flex items-center gap-4 px-6 py-4 rounded-2xl text-sm sidebar-link" id="nav-0">
+                        <i class="fa-solid fa-gauge-high w-5"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/FoodApp/view_food_details/" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm text-gray-600 hover:text-gray-900 sidebar-link" id="nav-1">
+                        <i class="fa-solid fa-utensils w-5"></i>
+                        <span>Food Menu</span>
+                    </a>
+                    <a href="/FoodApp/view_category/" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm text-gray-600 hover:text-gray-900 sidebar-link" id="nav-2">
+                        <i class="fa-solid fa-tags w-5"></i>
+                        <span>Categories</span>
+                    </a>
+                    <a href="/FoodApp/view_user_details/"  class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm text-gray-600 hover:text-gray-900 sidebar-link" id="nav-3">
+                        <i class="fa-solid fa-users w-5"></i>
+                        <span>Customers</span>
+                    </a>
+                    <a href="/FoodApp/admin_view_orders/"  class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm text-gray-600 hover:text-gray-900 sidebar-link" id="nav-4">
+                        <i class="fa-solid fa-receipt w-5"></i>
+                        <span>Orders</span>
+                    </a>
+                </nav>
+
+                <!-- Quick Stats -->
+                <div class="mt-12 px-6">
+                    <p class="text-xs uppercase tracking-widest text-gray-500 mb-4">Quick Stats</p>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center">
+                            <div class="text-gray-600 text-sm">Today's Revenue</div>
+                            <div class="text-2xl font-semibold text-emerald-600">$2,847</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-gray-600 text-sm">Pending Orders</div>
+                            <div class="text-2xl font-semibold text-amber-600">18</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-gray-600 text-sm">Active Customers</div>
+                            <div class="text-2xl font-semibold text-sky-600">243</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-6 border-t border-gray-100">
+                <div  class="flex items-center gap-3 px-6 py-4 text-red-600 hover:bg-red-50 rounded-2xl cursor-pointer transition-colors">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <a href="/FoodApp/login_page/">                    <span class="font-medium">Logout</span>
+</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Bar -->
+            <header class="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-gray-500 hover:text-gray-700">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                    <div class="relative w-80">
+                        <input id="search" type="text" placeholder="Search menu, orders, customers..."
+                               class="w-full bg-white border border-gray-300 rounded-3xl py-3 px-5 pl-12 text-sm focus:outline-none focus:border-yellow-500 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass absolute left-5 top-3.5 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <!-- Notifications -->
+                    <div class="relative cursor-pointer">
+                        <i class="fa-solid fa-bell text-2xl text-gray-500 hover:text-gray-700 transition-colors"></i>
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] flex items-center justify-center rounded-full font-medium">7</span>
+                    </div>
+
+                    <!-- User -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <div class="font-semibold text-sm">Alex Rivera</div>
+                            <div class="text-emerald-600 text-xs">Online</div>
+                        </div>
+                        <div class="w-9 h-9 bg-gradient-to-br from-yellow-400 to-amber-600 rounded-2xl flex items-center justify-center text-xl shadow-inner text-white">👨‍🍳</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-auto p-8" id="content-area">
+                <!-- Welcome -->
+                <div class="mb-10">
+                    <h1 class="text-4xl font-bold text-gray-900">Good morning, Alex 👋</h1>
+                    <p class="text-gray-600 mt-2">Here's what's happening with your restaurant today.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <div class="bg-white rounded-3xl p-7 card-hover border border-gray-200">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="text-gray-500 text-sm">Total Orders</div>
+                                <div id="stat-orders" class="text-4xl font-bold mt-3 stat-number text-gray-900">184</div>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl">
+                                📦
+                            </div>
+                        </div>
+                        <div class="mt-6 text-emerald-600 text-sm flex items-center gap-1">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span>+12% from yesterday</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-7 card-hover border border-gray-200">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="text-gray-500 text-sm">Revenue Today</div>
+                                <div id="stat-revenue" class="text-4xl font-bold mt-3 stat-number text-gray-900">$3,284</div>
+                            </div>
+                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl">
+                                💰
+                            </div>
+                        </div>
+                        <div class="mt-6 text-emerald-600 text-sm flex items-center gap-1">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span>+8.4% from yesterday</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-7 card-hover border border-gray-200">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="text-gray-500 text-sm">Menu Items</div>
+                                <div id="stat-menu" class="text-4xl font-bold mt-3 stat-number text-gray-900">87</div>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-3xl">
+                                🍝
+                            </div>
+                        </div>
+                        <div class="mt-6 text-amber-600 text-sm flex items-center gap-1">
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                            <span>2 new this week</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-7 card-hover border border-gray-200">
+                        <div class="flex justify-between">
+                            <div>
+                                <div class="text-gray-500 text-sm">Avg. Rating</div>
+                                <div class="text-4xl font-bold mt-3 flex items-baseline gap-1 text-gray-900">
+                                    4.8 <span class="text-2xl text-yellow-500">★</span>
+                                </div>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center text-3xl">
+                                ⭐
+                            </div>
+                        </div>
+                        <div class="mt-6 text-emerald-600 text-sm">Based on 421 reviews</div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+
+                <!-- Recent Activity -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-6 right-6 bg-white border border-yellow-500 text-yellow-600 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toast-text"></span>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            for (let i = 0; i < 5; i++) {
+                const el = document.getElementById(`nav-${i}`);
+                if (el) el.classList.remove('nav-active');
+            }
+            const activeEl = document.getElementById(`nav-${tab}`);
+            if (activeEl) activeEl.classList.add('nav-active');
+
+            const content = document.getElementById('content-area');
+            // Keep your existing switchTab logic here...
+        }
+
+        function addNewItem() {
+            showToast("New menu item form opened (demo)");
+        }
+
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                showToast("Logged out successfully");
+                setTimeout(() => window.location.reload(), 1500);
+            }
+        }
+
+        function toggleSidebar() {
+            showToast("Sidebar toggle (mobile view)");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = message;
+            toast.classList.remove('hidden');
+            toast.style.transform = 'translateY(0)';
+
+            setTimeout(() => {
+                toast.style.transform = 'translateY(80px)';
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 3000);
+        }
+
+        // Animate stat numbers
+        function animateValue(id, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                const el = document.getElementById(id);
+                if (el) el.textContent = value.toLocaleString();
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        window.onload = function() {
+            setTimeout(() => {
+                animateValue("stat-orders", 120, 184, 1800);
+                animateValue("stat-revenue", 2100, 3284, 2000);
+                animateValue("stat-menu", 65, 87, 1600);
+            }, 800);
+        };
+    </script>
+</body>
+</html>

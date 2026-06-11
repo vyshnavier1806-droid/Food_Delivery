@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodoRax - Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+        body {
+            min-height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+ 
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 420px;
+        }
+ 
+        .card {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+ 
+        /* ── Header ── */
+        .card-header {
+            background: #F5C107;
+            padding: 2rem 2rem 1.75rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+ 
+        /* Animated food SVG illustration */
+        .food-scene {
+            width: 220px;
+            height: 110px;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+ 
+        /* Burger bounce */
+        .burger-group {
+            animation: burgerBounce 2s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+        @keyframes burgerBounce {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-8px); }
+        }
+ 
+        /* Fries wiggle */
+        .fries-group {
+            animation: friesWiggle 1.8s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+        @keyframes friesWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25%       { transform: rotate(4deg); }
+            75%       { transform: rotate(-4deg); }
+        }
+ 
+        /* Cup float */
+        .cup-group {
+            animation: cupFloat 2.4s ease-in-out infinite;
+        }
+        @keyframes cupFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-6px); }
+        }
+ 
+        /* Steam puffs */
+        .steam {
+            animation: steamRise 1.6s ease-in-out infinite;
+            opacity: 0;
+        }
+        .steam:nth-child(2) { animation-delay: 0.4s; }
+        .steam:nth-child(3) { animation-delay: 0.8s; }
+        @keyframes steamRise {
+            0%   { opacity: 0;   transform: translateY(0px) scaleX(1); }
+            40%  { opacity: 0.6; transform: translateY(-8px) scaleX(1.2); }
+            100% { opacity: 0;   transform: translateY(-18px) scaleX(0.6); }
+        }
+ 
+        /* Stars sparkle */
+        .star {
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        .star:nth-child(2) { animation-delay: 0.7s; }
+        .star:nth-child(3) { animation-delay: 1.3s; }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50%       { opacity: 1;   transform: scale(1.3); }
+        }
+ 
+        .logo-box {
+            width: 64px;
+            height: 64px;
+            background: #1a1a1a;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+            font-size: 2rem;
+        }
+ 
+        .card-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+ 
+        .card-header p {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #5a4500;
+        }
+ 
+        /* ── Form ── */
+        .card-body { padding: 2rem; }
+ 
+        .form-group { margin-bottom: 1.25rem; }
+ 
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+ 
+        .input-wrap { position: relative; }
+ 
+        .input-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #aaa;
+        }
+ 
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            border: 1.5px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #fafafa;
+            color: #1a1a1a;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+ 
+        .input-wrap input:focus { border-color: #F5C107; background: #fff; }
+        .input-wrap input::placeholder { color: #bbb; }
+ 
+        .form-footer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 13px;
+        }
+ 
+        .remember-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            cursor: pointer;
+        }
+ 
+        .remember-label input[type="checkbox"] {
+            accent-color: #F5C107;
+            width: 15px;
+            height: 15px;
+        }
+ 
+        .forgot-link { color: #c49800; font-weight: 600; text-decoration: none; }
+        .forgot-link:hover { color: #a37f00; }
+ 
+        .btn-login {
+            width: 100%;
+            background: #F5C107;
+            color: #1a1a1a;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+ 
+        .btn-login:hover { background: #e0b000; }
+        .btn-login:active { transform: scale(0.98); }
+ 
+        .footer-text {
+            margin-top: 1.25rem;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+ 
+<div class="wrapper">
+    <div class="card">
+ 
+        <!-- Header -->
+        <div class="card-header">
+ 
+            <!-- Animated food scene SVG -->
+            <svg class="food-scene" viewBox="0 0 220 110" xmlns="http://www.w3.org/2000/svg">
+ 
+                <!-- Stars -->
+                <g class="star" fill="#1a1a1a" opacity="0.25">
+                    <polygon points="18,10 19.5,14.5 24,14.5 20.5,17.5 22,22 18,19 14,22 15.5,17.5 12,14.5 16.5,14.5" transform="scale(0.55) translate(14,2)"/>
+                </g>
+                <g class="star" fill="#1a1a1a" opacity="0.25">
+                    <polygon points="18,10 19.5,14.5 24,14.5 20.5,17.5 22,22 18,19 14,22 15.5,17.5 12,14.5 16.5,14.5" transform="scale(0.45) translate(380,8)"/>
+                </g>
+                <g class="star" fill="#1a1a1a" opacity="0.25">
+                    <polygon points="18,10 19.5,14.5 24,14.5 20.5,17.5 22,22 18,19 14,22 15.5,17.5 12,14.5 16.5,14.5" transform="scale(0.5) translate(200,0)"/>
+                </g>
+ 
+                <!-- BURGER (left) -->
+                <g class="burger-group" transform="translate(22, 10)">
+                    <!-- bun top -->
+                    <ellipse cx="34" cy="22" rx="30" ry="14" fill="#d4700a"/>
+                    <ellipse cx="34" cy="19" rx="28" ry="12" fill="#e8821a"/>
+                    <!-- sesame seeds -->
+                    <ellipse cx="26" cy="16" rx="3" ry="1.5" fill="#c47010" opacity="0.7"/>
+                    <ellipse cx="36" cy="13" rx="3" ry="1.5" fill="#c47010" opacity="0.7"/>
+                    <ellipse cx="44" cy="17" rx="3" ry="1.5" fill="#c47010" opacity="0.7"/>
+                    <!-- lettuce -->
+                    <path d="M6,35 Q14,29 22,35 Q30,29 38,35 Q46,29 54,35 Q62,29 65,33 L65,38 L6,38Z" fill="#4caf50"/>
+                    <!-- cheese -->
+                    <rect x="8" y="38" width="54" height="6" rx="2" fill="#f5c107"/>
+                    <!-- patty -->
+                    <rect x="8" y="44" width="54" height="10" rx="4" fill="#5d2e0c"/>
+                    <!-- bun bottom -->
+                    <ellipse cx="34" cy="58" rx="32" ry="10" fill="#e8821a"/>
+                    <ellipse cx="34" cy="62" rx="32" ry="6" fill="#d4700a"/>
+                </g>
+ 
+                <!-- FRIES (center) -->
+                <g class="fries-group" transform="translate(88, 18)">
+                    <!-- container -->
+                    <path d="M8,30 L6,75 L38,75 L36,30 Z" fill="#e8250a"/>
+                    <rect x="6" y="26" width="32" height="8" rx="3" fill="#c71e08"/>
+                    <!-- white stripe -->
+                    <rect x="16" y="26" width="12" height="8" rx="2" fill="#fff" opacity="0.25"/>
+                    <!-- fries sticks -->
+                    <rect x="11" y="4"  width="5" height="30" rx="2" fill="#F5C107"/>
+                    <rect x="18" y="0"  width="5" height="32" rx="2" fill="#F5C107"/>
+                    <rect x="25" y="3"  width="5" height="30" rx="2" fill="#F5C107"/>
+                    <rect x="32" y="6"  width="4" height="26" rx="2" fill="#e8b800"/>
+                </g>
+ 
+                <!-- CUP (right) -->
+                <g class="cup-group" transform="translate(150, 8)">
+                    <!-- straw -->
+                    <rect x="38" y="2" width="4" height="40" rx="2" fill="#e8250a"/>
+                    <rect x="38" y="2" width="4" height="5" rx="2" fill="#fff" opacity="0.5"/>
+                    <!-- lid -->
+                    <ellipse cx="28" cy="24" rx="24" ry="6" fill="#1a1a1a"/>
+                    <ellipse cx="28" cy="22" rx="22" ry="5" fill="#333"/>
+                    <!-- cup body -->
+                    <path d="M6,28 L10,85 L46,85 L50,28 Z" fill="#1a1a1a"/>
+                    <!-- branding stripe -->
+                    <path d="M8,45 L10,75 L46,75 L48,45 Z" fill="#F5C107" opacity="0.15"/>
+                    <text x="28" y="62" text-anchor="middle" font-size="9" font-weight="bold" fill="#F5C107" font-family="sans-serif">FOODO</text>
+                    <!-- bottom -->
+                    <ellipse cx="28" cy="84" rx="18" ry="4" fill="#111"/>
+                    <!-- steam -->
+                    <path class="steam" d="M22,20 Q18,14 22,8" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path class="steam" d="M28,18 Q24,12 28,6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path class="steam" d="M34,20 Q30,14 34,8" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </g>
+ 
+                <!-- ground line -->
+                <line x1="10" y1="100" x2="210" y2="100" stroke="#1a1a1a" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.2"/>
+            </svg>
+ 
+            <div class="logo-box">🍔</div>
+            <h1>FoodoRax</h1>
+            <p>Login Portal</p>
+        </div>
+ 
+        <!-- Form -->
+        <div class="card-body">
+            <form method="post" action="/FoodApp/login_post/">
+                {% csrf_token %}
+ 
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="username" name="username" required placeholder="Enter your username">
+                    </div>
+                </div>
+ 
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+                </div>
+ 
+                <div class="form-footer-row">
+                    <label class="remember-label">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="/FoodApp/register_user/" class="forgot-link">Create New Account?</a>
+                </div>
+ 
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <p class="footer-text">© 2026 FoodoRax Restaurant • Admin Login</p>
+</div>
+ 
+</body>
+</html>
+ 

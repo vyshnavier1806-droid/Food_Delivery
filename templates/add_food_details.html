@@ -1,0 +1,139 @@
+{% extends 'admin_home.html' %}
+
+{% block body %}
+
+<div class="p-8 max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-10">
+        <a href="/FoodApp/view_food_details"
+           class="text-gray-500 hover:text-gray-700 transition-colors">
+            <i class="fa-solid fa-arrow-left text-2xl"></i>
+        </a>
+        <div>
+            <h1 class="text-4xl font-bold tracking-tighter text-gray-900">Add New Food Item</h1>
+            <p class="text-gray-600 mt-1 text-[17px]">Fill in the details below to add a new item to your menu.</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-3xl p-10 border border-gray-200 shadow-xl">
+        <form method="post" action="/FoodApp/add_food_details_post/"
+              enctype="multipart/form-data" class="space-y-8">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Food Name -->
+                <div>
+                    <label class="block text-xs font-semibold tracking-[1.5px] text-gray-500 mb-2">FOOD NAME</label>
+                    <input type="text" name="name" required
+                           class="form-input w-full bg-white border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none text-gray-900 text-lg font-medium">
+                </div>
+
+                <!-- Size -->
+                <div>
+                    <label class="block text-xs font-semibold tracking-[1.5px] text-gray-500 mb-2">SIZE / PORTION</label>
+                    <input type="text" name="size" placeholder="e.g. Small, Medium, Large, Full" required
+                           class="form-input w-full bg-white border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none text-gray-900 text-lg font-medium">
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-semibold tracking-[1.5px] text-gray-500 mb-2">DESCRIPTION</label>
+                <textarea name="description" rows="4" required
+                          class="form-input w-full bg-white border border-gray-300 rounded-3xl px-5 py-4 focus:outline-none text-gray-900 text-base leading-relaxed"
+                          placeholder="Describe the dish, ingredients, taste, and any special notes..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Price -->
+                <div>
+                    <label class="block text-xs font-semibold tracking-[1.5px] text-gray-500 mb-2">PRICE (₹)</label>
+                    <input type="number" name="price" step="0.01" min="0" required
+                           class="form-input w-full bg-white border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none text-gray-900 text-lg font-medium">
+                </div>
+
+                <!-- Available -->
+                <div>
+                    <label class="block text-xs font-semibold tracking-[1.5px] text-gray-500 mb-2">AVAILABLE QUANTITY</label>
+                    <input type="number" name="available" value="1" min="0" required
+                           class="form-input w-full bg-white border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none text-gray-900 text-lg font-medium">
+                </div>
+            </div>
+
+            <!-- Image Upload -->
+            <div>
+                <label class="block text-xs font-semibold tracking-[1.5px] text-gray-500 mb-2">FOOD IMAGE</label>
+                <div class="border-2 border-dashed border-gray-300 hover:border-yellow-500 rounded-3xl p-8 text-center transition-colors">
+                    <i class="fa-solid fa-cloud-arrow-up text-5xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-700 mb-1 font-semibold text-lg">Upload Food Image</p>
+                    <p class="text-sm text-gray-500">PNG, JPG or JPEG • Recommended size 800x600</p>
+
+                    <input type="file" name="image" accept="image/*" required
+                           class="mt-6 block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6
+                                  file:rounded-2xl file:border-0 file:text-sm file:font-semibold
+                                  file:bg-yellow-500 file:text-gray-900 hover:file:bg-yellow-600">
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex gap-4 pt-8">
+                <button type="submit"
+                        class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-5 rounded-3xl text-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Food Item
+                </button>
+
+                <a href="/FoodApp/view_food_details"
+                   class="flex-1 border border-gray-300 hover:bg-gray-100 font-medium py-5 rounded-3xl text-lg text-center transition-all text-gray-700">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    .form-input {
+        transition: all 0.3s ease;
+    }
+    .form-input:focus {
+        border-color: rgb(234 179 8);
+        box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.25);
+        outline: none;
+    }
+
+    /* Apply New Font Family */
+    h1, h2, h3, label, input, textarea, button, a {
+        font-family: 'Poppins', system-ui, sans-serif;
+    }
+
+    /* Extra Font Weight Variations */
+    h1 {
+        font-weight: 700;
+        letter-spacing: -0.04em;
+    }
+
+    label {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    input, textarea {
+        font-weight: 500;
+    }
+</style>
+
+<script>
+    // Optional: Preview image before upload
+    const fileInput = document.querySelector('input[type="file"]');
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            console.log('Image selected:', e.target.files[0].name);
+        }
+    });
+</script>
+
+{% endblock %}
